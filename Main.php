@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
+<!-- 
+		Main Page explains meanings of arousal and valence by using a arousal-valence plane figure and sample songs.
+		This page gets data from MySQL and prepares SESSIONs for storing data. 		
+-->
+
+
 <head>
 <title>Arousal and Valence</title>
 <meta charset="UTF-8">
 </head>
 
-<!------------------------- Connect to SQL ------------------------->
+<!--
+		Connect to SQL 
+-->
 <?php
 session_start();
+
+// MySQL Data
 $servername = "localhost";
 $username = "root";
 $password = "";
-$_SESSION["Selected_Arousal"] = "NA";
-$_SESSION["Selected_Valence"] = "NA";
+$_SESSION["Selected_Arousal"] = "NA"; // variable for storing collected higher arousal
+$_SESSION["Selected_Valence"] = "NA"; // variable for storing collected higher valence
 $dbname = "music_emotion_retrieval";
 
 // Create Connection
@@ -22,15 +33,22 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
 	die("Connection failed: ". $conn->connect_error);
 }
-//echo "MySQL Connected successfully";
-//echo "<br>";
-// SQL to create table
+
+
+/***********************************************************************************************
+ *		This table is created for Demo. For practical service, MySQL should get data directly  *
+ *		from the database table, which already contains the songs list. 					   *
+ ***********************************************************************************************
+ */
+
+// Creating Table
 $sql = "CREATE TABLE IF NOT EXISTS SONG_DATA (
 		id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 		song_1 TEXT(30) NOT NULL,
 		song_2 TEXT(30) NOT NULL,
 		annotation INT(6) NOT NULL
 		)";
+
 if ($conn->query($sql) == TRUE) {
 	//echo "Table SONG_DATA connected successfully";
 	//echo "<br>";
@@ -38,7 +56,8 @@ if ($conn->query($sql) == TRUE) {
 	echo "Error creating table: " . $conn->error;
 	echo "<br>";
 }
-/****************** Insert Initial Dataset to MySQL *******************/
+
+//	Insert Initial Dataset to MySQL
 $sql = "INSERT INTO SONG_DATA(song_1,song_2,annotation)
 			SELECT 'Sample1.mp3','Sample2.mp3',0 FROM DUAL
 		WHERE NOT EXISTS
@@ -57,7 +76,13 @@ $sql = "INSERT INTO SONG_DATA(song_1,song_2,annotation)
 		WHERE NOT EXISTS
 			(SELECT song_1 AND song_2 FROM SONG_DATA WHERE song_1='Sample5.mp3' AND song_2='Sample6.mp3')";
 $conn->query($sql);
+//*********************************************************************************************************
 
+/*
+ * 		It assumes there are 4 columns in table.
+ * 		ID | SONG1 | SONG2 | ANNOTATION 
+ * 		It load the pair of the least annotated.
+ */
 
 // Load data (the least annotated data)
 $sql = "SELECT id, song_1, song_2, annotation FROM SONG_DATA ORDER BY annotation";
@@ -70,8 +95,7 @@ $_SESSION["song_2"]=$recent["song_2"];
 $conn->close();
 ?>
 
-
-
+<!-- Introduction Part -->
 <h1> Introduction </h1>
 <form>
 <table style = "width: 60%">
@@ -98,6 +122,7 @@ value to determine emotion. Some emotions can be expressed as a combination of a
 At the first measurement page, you only have to pick the song has high arousal. And at the second measurement page,
 you will select the song has high valence. (5-seconds per each song)
 
+<!-- Instruction Part -->
 <h1> Instructions</h1>
 <ul style="list-style-type:square">
   <li> Move your cursor to audio player below to play a song. </li>
@@ -114,6 +139,12 @@ you will select the song has high valence. (5-seconds per each song)
 </form>
 
 <br>
+
+<!-- 
+		A Table for media player.
+		High Arousal | Low Arousal
+		High Valence | Low Valence
+-->
 <table style = "width: 60%">
 <tr>
 <td> <input type="button" value="Start" style="float: right; width: 200px" onclick="location.href='Arousal.php'"> </td>

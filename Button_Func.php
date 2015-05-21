@@ -1,4 +1,8 @@
 <?php
+
+/*		This page contains functions for each button in Arousal.php and Valence.php pages.
+ * 		If a event have to be changed when users click the buttons, you can change a function in this page. 
+ */
 	session_start();
 	
 	// Function for Arousal Page - Select A button
