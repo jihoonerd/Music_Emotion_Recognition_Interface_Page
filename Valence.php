@@ -88,6 +88,13 @@ session_start();
 <br>
 <br>
 
+<!-- 
+	endA() and endB(): function check whether the both songs end or not.
+	endableButton(): It enables a 'Next' Button.
+	PlaySound(): Function for playing examples.
+	PauseSound(): Functino for pausing examples.
+
+-->
 <script type="text/javascript">
 var A = false;
 var B = false;
