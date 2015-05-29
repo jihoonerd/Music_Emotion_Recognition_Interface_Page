@@ -9,6 +9,6 @@ Interface page for ranking based music emotion recognition
 * Valence.php
 <p> This page asks users to choose a song which has higher valence.
 * Button_Func.php
-<p> This page controls the event when the buttons in arousal/valence.php is hit.
+<p> This page controls the event when a button in arousal/valence.php is hit.
 * Result_page.php
 <p> In this page, selected data will be sent to database server.
