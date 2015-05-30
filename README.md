@@ -1,4 +1,4 @@
-# DREXEL_UNIV-Music_Emotion_Retrieval
+# Interface Web Page for Ranking Based Music Emotion Recognition
 
 Interface page for ranking based music emotion recognition
 
